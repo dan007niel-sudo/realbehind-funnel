@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RealBehind — Echte Momente</title>
+    <meta name="description" content="Echte Momente, die man fühlt. Hochwertiger Behind-the-Scenes-Content für dein Event oder deine Marke.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="/static/style.css">
+    
+    <!-- Calendly -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+</head>
+<body>
+
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <main id="funnel-container">
+        
+        <!-- STEP 1: WELCOME -->
+        <section id="step-1" class="step active">
+            <div class="content-box">
+                <span class="badge">Behind the Scenes Content</span>
+                <h1>Echte Momente.<br><span class="text-gradient">Echte Emotionen.</span></h1>
+                <p>Ich halte die Momente fest, die sonst verloren gehen. Hochwertiger Content für Hochzeiten, Events und Marken, die Echtheit über Perfektion stellen.</p>
+                <button onclick="nextStep(2)" class="btn-primary">Jetzt Kennenlernen anfragen</button>
+            </div>
+            <div class="background-text">REALBEHIND</div>
+        </section>
+
+        <!-- STEP 2: QUALIFICATION -->
+        <section id="step-2" class="step">
+            <div class="content-box glass">
+                <div class="step-indicator">Schritt 01 / 02</div>
+                <h2>Erzähl uns von deinem Anlass</h2>
+                <form id="lead-form">
+                    <div class="input-group">
+                        <label for="name">Name / Brautpaar / Unternehmen</label>
+                        <input type="text" id="name" placeholder="z.B. Max & Lisa | RealBehind GmbH" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="instagram">Instagram Name</label>
+                        <input type="text" id="instagram" placeholder="z.B. @deine.brand" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="website">Website (Optional)</label>
+                        <input type="text" id="website" placeholder="www.dein-event.de">
+                    </div>
+                    <div class="input-group">
+                        <label for="fokus">Worum geht es?</label>
+                        <select id="fokus" required>
+                            <option value="" disabled selected>Bitte wählen...</option>
+                            <option value="Hochzeit">Hochzeit (Authentische Erinnerungen)</option>
+                            <option value="Event & Corporate">Event & Corporate (BTS Content)</option>
+                            <option value="Brand & Creator">Brand & Creator (Personal Branding)</option>
+                            <option value="Kooperation">Kooperation (Foto/Video)</option>
+                        </select>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="button" class="btn-outline" onclick="nextStep(1)">Zurück</button>
+                        <button type="submit" class="btn-primary" style="flex: 1;">Weiter</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- STEP 3: ANALYSIS ANIMATION -->
+        <section id="step-3" class="step">
+            <div class="content-box centered">
+                <div class="loader-container">
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <div class="ring"></div>
+                    <span class="loading-text">Anfrage wird bearbeitet...</span>
+                </div>
+                <h2>Wir freuen uns auf unser Gespräch.</h2>
+                <p>Ich bereite mich auf unser Kennenlernen vor...</p>
+            </div>
+        </section>
+
+        <!-- STEP 4: CALENDLY -->
+        <section id="step-4" class="step">
+            <div class="content-box glass full-height">
+                <header class="calendly-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <div class="step-indicator" style="margin-bottom: 0.5rem;">Schritt 02 / 02</div>
+                        <h2 style="margin-bottom: 0;">Termin sichern.</h2>
+                    </div>
+                    <button type="button" class="btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.85rem;" onclick="nextStep(2)">Zurück</button>
+                </header>
+                <!-- Calendly inline widget begin -->
+                <div id="calendly-embed" class="calendly-inline-widget" style="min-width:320px;height:700px;" data-auto-load="false"></div>
+                <!-- Calendly inline widget end -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer-minimal">
+        &copy; 2026 RealBehind. Echte Momente. Real Moments.
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

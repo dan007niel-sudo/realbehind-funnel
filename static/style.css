@@ -1,0 +1,349 @@
+/* ═══════════════════════════════════════════════════
+   RealBehind Design System — Enterprise Funnel
+   Colors: Onyx, White, Slate Blue, Frost-Glass
+   ═══════════════════════════════════════════════════ */
+
+:root {
+    --bg-color: #050505;
+    --text-primary: #ffffff;
+    --text-secondary: #a0aec0;
+    --accent: #4a5568; /* Slate Blue */
+    --accent-glow: #2d3748;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --radius-lg: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+/* ── Background Glow Effects ──────────────────────── */
+.glow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.2;
+}
+
+.orb-1 {
+    width: 600px;
+    height: 600px;
+    background: var(--accent);
+    top: -200px;
+    right: -200px;
+    animation: pulse 8s infinite alternate;
+}
+
+.orb-2 {
+    width: 400px;
+    height: 400px;
+    background: #1a202c;
+    bottom: -100px;
+    left: -100px;
+    animation: pulse 12s infinite alternate-reverse;
+}
+
+/* ── Layout ───────────────────────────────────────── */
+main {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.step {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.step.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.content-box {
+    padding: 3rem;
+    position: relative;
+    z-index: 2;
+}
+
+.content-box.glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.content-box.centered {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Typography ───────────────────────────────────── */
+h1 {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+}
+
+p {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #ffffff, #a0aec0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.step-indicator {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 1rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.background-text {
+    position: fixed;
+    bottom: -50px;
+    left: 20px;
+    font-size: 15vw;
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    z-index: -1;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+/* ── Components ───────────────────────────────────── */
+.btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-color);
+    border: none;
+    padding: 1.25rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.02);
+    background: #f0f0f0;
+}
+
+.btn-primary.full-width {
+    width: 100%;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--text-secondary);
+    padding: 1.25rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-outline:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.input-group input, .input-group select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    padding: 1rem;
+    border-radius: 12px;
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.input-group input:focus, .input-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+}
+
+.input-group option {
+    background: var(--bg-color);
+    color: white;
+}
+
+/* ── Loader ───────────────────────────────────────── */
+.loader-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.ring {
+    width: 100%;
+    height: 100%;
+    border: 4px solid transparent;
+    border-top: 4px solid var(--text-primary);
+    border-radius: 50%;
+    position: absolute;
+    animation: spin 1.5s linear infinite;
+}
+
+.ring:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    border-top-color: var(--accent);
+    animation-duration: 2s;
+    animation-direction: reverse;
+}
+
+.ring:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    border-top-color: var(--text-secondary);
+}
+
+.loading-text {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ── Calendly ─────────────────────────────────────── */
+.calendly-header {
+    margin-bottom: 1rem;
+}
+
+#step-4 .content-box {
+    max-width: 900px;
+    width: 100%;
+}
+
+.footer-minimal {
+    position: fixed;
+    bottom: 2rem;
+    width: 100%;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+}
+
+/* ── Animations ───────────────────────────────────── */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.3); }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ── Mobile ───────────────────────────────────────── */
+@media (max-width: 600px) {
+    .content-box {
+        padding: 2rem 1.5rem;
+    }
+    
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.5rem; }
+    
+    .btn-primary {
+        padding: 1rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
