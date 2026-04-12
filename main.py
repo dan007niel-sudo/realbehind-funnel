@@ -85,7 +85,7 @@ Hey [Name], mega, dass wir sprechen. Der Termin ist geblockt. Überleg dir doch 
     client = genai.Client(api_key=GOOGLE_API_KEY)
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-1.5-flash",
             contents=[user_input],
             config=genai.types.GenerateContentConfig(
                 system_instruction=system_prompt,
