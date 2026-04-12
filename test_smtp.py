@@ -7,8 +7,8 @@ load_dotenv()
 
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-SMTP_USER = os.getenv("SMTP_USER", "")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
+SMTP_USER = "realbehindinfo@gmail.com"
+SMTP_PASSWORD = "hcxa hdls gzwt ahuj"
 
 print(f"Testing login for {SMTP_USER} with password {SMTP_PASSWORD}...")
 
