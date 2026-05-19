@@ -191,26 +191,6 @@ main {
     padding: 4rem 2rem;
 }
 
-/* ── Logo ───────────────────────────────────────────── */
-.logo {
-    display: block;
-    width: 200px;
-    height: auto;
-    object-fit: contain;
-    /* High-res crisp rendering */
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-}
-
-.logo--small {
-    width: 130px;
-}
-
-/* ── Site Header (Step 1) ───────────────────────────── */
-.site-header {
-    margin-bottom: 3rem;
-}
-
 /* ── Step Header (Steps 2/4) ────────────────────────── */
 .step-header {
     display: flex;
@@ -487,16 +467,6 @@ h2 em {
     stroke-dashoffset: 0;
 }
 
-.loader-logo {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
-    border-radius: 50%;
-    background: var(--white);
-    padding: 4px;
-    box-shadow: 0 2px 8px rgba(30, 22, 18, 0.08);
-}
-
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
@@ -563,9 +533,6 @@ h2 em {
 
     h1 { font-size: 2.75rem; letter-spacing: -0.5px; }
     h2 { font-size: 1.9rem; }
-
-    .logo { width: 160px; }
-    .logo--small { width: 110px; }
 
     .form-actions {
         flex-direction: column-reverse;
