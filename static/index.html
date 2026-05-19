@@ -109,6 +109,28 @@
                         </select>
                     </div>
 
+                    <div class="field-row">
+                        <div class="input-group">
+                            <label for="datum">Datum / Zeitraum</label>
+                            <input type="text" id="datum" placeholder="z.B. 12.09.2026 oder Sommer 2026" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="investitionsrahmen">Investitionsrahmen</label>
+                            <select id="investitionsrahmen" required>
+                                <option value="" disabled selected>Bitte wählen…</option>
+                                <option value="Ich brauche erst ein Gefühl für die Pakete">Ich brauche erst ein Gefühl für die Pakete</option>
+                                <option value="ab 799 €">ab 799 €</option>
+                                <option value="1.000-1.500 €">1.000-1.500 €</option>
+                                <option value="1.500 €+">1.500 €+</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="momente">Welche Momente dürfen auf keinen Fall verloren gehen?</label>
+                        <textarea id="momente" rows="3" placeholder="z.B. First Look, Reaktionen der Gäste, kleine ungestellte Augenblicke…" required></textarea>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-ghost" onclick="nextStep(1)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

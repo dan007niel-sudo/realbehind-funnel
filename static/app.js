@@ -20,11 +20,19 @@ if (leadForm) {
     leadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        if (!leadForm.checkValidity()) {
+            leadForm.reportValidity();
+            return;
+        }
+
         const leadData = {
-            name:      document.getElementById('name').value.trim(),
-            instagram: document.getElementById('instagram').value.trim(),
-            website:   document.getElementById('website').value.trim(),
-            fokus:     document.getElementById('fokus').value
+            name:                document.getElementById('name').value.trim(),
+            instagram:           document.getElementById('instagram').value.trim(),
+            website:             document.getElementById('website').value.trim(),
+            fokus:               document.getElementById('fokus').value,
+            datum:               document.getElementById('datum').value.trim(),
+            momente:             document.getElementById('momente').value.trim(),
+            investitionsrahmen:  document.getElementById('investitionsrahmen').value
         };
 
         // Transition to loading screen
@@ -63,7 +71,7 @@ function initCalendly(lead) {
             name: lead.name,
             customAnswers: {
                 a1: lead.instagram + (lead.website ? ` | ${lead.website}` : ''),
-                a2: lead.fokus
+                a2: `${lead.fokus} | ${lead.datum} | ${lead.investitionsrahmen} | ${lead.momente}`
             }
         },
         utm: {
