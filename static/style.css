@@ -197,8 +197,6 @@ main {
     width: 200px;
     height: auto;
     object-fit: contain;
-    /* Blend white JPEG background into warm ivory page bg */
-    mix-blend-mode: multiply;
     /* High-res crisp rendering */
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
