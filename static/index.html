@@ -3,110 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>RealBehind — Echte Momente</title>
-    <meta name="description" content="Echte Momente, die man fühlt. Hochwertiger Behind-the-Scenes-Content für dein Event oder deine Marke.">
-    
+    <title>RealBehind — Echte Momente, die man fühlt</title>
+    <meta name="description" content="Behind-the-Scenes Content für Hochzeiten & Events, der echte Emotionen einfängt. Jetzt Kennenlernen buchen.">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
     <!-- Styles -->
     <link rel="stylesheet" href="/static/style.css">
-    
+
     <!-- Calendly -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
 </head>
 <body>
 
-    <div class="glow-container">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
+    <!-- Grain Overlay -->
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <!-- Background Atmosphere -->
+    <div class="bg-atmosphere" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
 
     <main id="funnel-container">
-        
-        <!-- STEP 1: WELCOME -->
+
+        <!-- ─────────────────────────────────── STEP 1: HERO -->
         <section id="step-1" class="step active">
-            <div class="content-box">
-                <span class="badge">Behind the Scenes Content</span>
-                <h1>Echte Momente.<br><span class="text-gradient">Echte Emotionen.</span></h1>
-                <p>Ich halte die Momente fest, die sonst verloren gehen. Hochwertiger Content für Hochzeiten, Events und Marken, die Echtheit über Perfektion stellen.</p>
-                <button onclick="nextStep(2)" class="btn-primary">Jetzt Kennenlernen anfragen</button>
+            <div class="content-box hero-box">
+
+                <header class="site-header">
+                    <img src="/static/logo.jpeg" alt="RealBehind Logo" class="logo" width="180" height="auto">
+                </header>
+
+                <div class="hero-body">
+                    <span class="eyebrow">Behind the Scenes · Hochzeiten & Events</span>
+
+                    <h1>
+                        Die Momente,<br>
+                        <em>die sonst verloren gehen.</em>
+                    </h1>
+
+                    <p class="hero-lead">
+                        Kein gestelltes Lächeln. Kein perfektes Licht.<br>
+                        Echte Emotionen — festgehalten für immer.
+                    </p>
+
+                    <button onclick="nextStep(2)" class="btn-primary">
+                        <span>Jetzt Kennenlernen anfragen</span>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <p class="social-proof">
+                        Bereits über <strong>80 Hochzeiten</strong> begleitet &nbsp;·&nbsp; Ruhrgebiet &amp; bundesweit
+                    </p>
+                </div>
+
+                <div class="watermark" aria-hidden="true">REAL</div>
             </div>
-            <div class="background-text">REALBEHIND</div>
         </section>
 
-        <!-- STEP 2: QUALIFICATION -->
+        <!-- ─────────────────────────────────── STEP 2: FORM -->
         <section id="step-2" class="step">
-            <div class="content-box glass">
-                <div class="step-indicator">Schritt 01 / 02</div>
-                <h2>Erzähl uns von deinem Anlass</h2>
-                <form id="lead-form">
-                    <div class="input-group">
-                        <label for="name">Name / Brautpaar / Unternehmen</label>
-                        <input type="text" id="name" placeholder="z.B. Max & Lisa | RealBehind GmbH" required>
+            <div class="content-box glass-box">
+
+                <header class="step-header">
+                    <img src="/static/logo.jpeg" alt="RealBehind" class="logo logo--small" width="120" height="auto">
+                    <span class="step-label">01 / 02 &nbsp;—&nbsp; Erzähl uns von eurem Anlass</span>
+                </header>
+
+                <h2>Dein besonderer<br><em>Moment wartet.</em></h2>
+
+                <form id="lead-form" novalidate>
+                    <div class="field-row">
+                        <div class="input-group">
+                            <label for="name">Name / Brautpaar / Unternehmen</label>
+                            <input type="text" id="name" placeholder="z.B. Sophie &amp; Leon" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" id="instagram" placeholder="@dein.handle" required>
+                        </div>
                     </div>
+
                     <div class="input-group">
-                        <label for="instagram">Instagram Name</label>
-                        <input type="text" id="instagram" placeholder="z.B. @deine.brand" required>
+                        <label for="website">Website <span class="optional">(optional)</span></label>
+                        <input type="text" id="website" placeholder="www.eure-hochzeit.de">
                     </div>
-                    <div class="input-group">
-                        <label for="website">Website (Optional)</label>
-                        <input type="text" id="website" placeholder="www.dein-event.de">
-                    </div>
+
                     <div class="input-group">
                         <label for="fokus">Worum geht es?</label>
                         <select id="fokus" required>
-                            <option value="" disabled selected>Bitte wählen...</option>
-                            <option value="Hochzeit">Hochzeit (Authentische Erinnerungen)</option>
-                            <option value="Event & Corporate">Event & Corporate (BTS Content)</option>
-                            <option value="Brand & Creator">Brand & Creator (Personal Branding)</option>
-                            <option value="Kooperation">Kooperation (Foto/Video)</option>
+                            <option value="" disabled selected>Bitte wählen…</option>
+                            <option value="Hochzeit">💍 Hochzeit — Authentische Erinnerungen</option>
+                            <option value="Event & Corporate">🎬 Event &amp; Corporate — BTS Content</option>
+                            <option value="Brand & Creator">✨ Brand &amp; Creator — Personal Branding</option>
+                            <option value="Kooperation">🤝 Kooperation — Foto / Video</option>
                         </select>
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <button type="button" class="btn-outline" onclick="nextStep(1)">Zurück</button>
-                        <button type="submit" class="btn-primary" style="flex: 1;">Weiter</button>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-ghost" onclick="nextStep(1)">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M13 8H3M3 8L7 4M3 8L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Zurück
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <span>Weiter</span>
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
                     </div>
                 </form>
+
             </div>
         </section>
 
-        <!-- STEP 3: ANALYSIS ANIMATION -->
+        <!-- ─────────────────────────────────── STEP 3: LOADER -->
         <section id="step-3" class="step">
-            <div class="content-box centered">
-                <div class="loader-container">
-                    <div class="ring"></div>
-                    <div class="ring"></div>
-                    <div class="ring"></div>
-                    <span class="loading-text">Anfrage wird bearbeitet...</span>
+            <div class="content-box centered-box">
+                <div class="loader-ring">
+                    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="40" cy="40" r="36" stroke="#f0e5dc" stroke-width="3"/>
+                        <circle cx="40" cy="40" r="36" stroke="#c9a08a" stroke-width="3"
+                                stroke-linecap="round" stroke-dasharray="56 170"
+                                class="spinner-arc"/>
+                    </svg>
+                    <img src="/static/logo.jpeg" alt="" class="loader-logo" aria-hidden="true">
                 </div>
-                <h2>Wir freuen uns auf unser Gespräch.</h2>
-                <p>Ich bereite mich auf unser Kennenlernen vor...</p>
+                <h2 class="loader-heading">Einen Moment…</h2>
+                <p class="loader-sub">Wir bereiten uns auf euer Kennenlernen vor.</p>
             </div>
         </section>
 
-        <!-- STEP 4: CALENDLY -->
+        <!-- ─────────────────────────────────── STEP 4: CALENDLY -->
         <section id="step-4" class="step">
-            <div class="content-box glass full-height">
-                <header class="calendly-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div class="content-box glass-box calendly-box">
+                <header class="step-header">
                     <div>
-                        <div class="step-indicator" style="margin-bottom: 0.5rem;">Schritt 02 / 02</div>
-                        <h2 style="margin-bottom: 0;">Termin sichern.</h2>
+                        <span class="step-label">02 / 02 &nbsp;—&nbsp; Termin sichern</span>
+                        <h2 style="margin-bottom: 0;">Wann passt es euch?</h2>
                     </div>
-                    <button type="button" class="btn-outline" style="padding: 0.75rem 1.5rem; font-size: 0.85rem;" onclick="nextStep(2)">Zurück</button>
+                    <button type="button" class="btn-ghost btn-ghost--icon" onclick="nextStep(2)" aria-label="Zurück">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                            <path d="M13 8H3M3 8L7 4M3 8L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Zurück
+                    </button>
                 </header>
-                <!-- Calendly inline widget begin -->
-                <div id="calendly-embed" class="calendly-inline-widget" style="min-width:320px;height:700px;" data-auto-load="false"></div>
-                <!-- Calendly inline widget end -->
+                <div id="calendly-embed" class="calendly-inline-widget" style="min-width:320px;height:680px;" data-auto-load="false"></div>
             </div>
         </section>
 
     </main>
 
-    <footer class="footer-minimal">
-        &copy; 2026 RealBehind. Echte Momente. Real Moments.
+    <footer class="site-footer">
+        <span>&copy; 2026 RealBehind</span>
+        <span class="footer-sep">·</span>
+        <span>Echte Momente. Für immer.</span>
     </footer>
 
     <script src="/static/app.js"></script>
