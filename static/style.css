@@ -396,6 +396,14 @@ h2 em {
     letter-spacing: 0.8px;
 }
 
+@media (min-width: 641px) {
+    .field-row .input-group label {
+        min-height: 2.6rem;
+        display: flex;
+        align-items: flex-end;
+    }
+}
+
 .input-group input,
 .input-group select {
     background: rgba(255, 255, 255, 0.85);
