@@ -136,3 +136,37 @@ document.addEventListener('mousemove', (e) => {
         orb.style.transform = `translate(${x * depth}px, ${y * depth}px)`;
     });
 });
+
+// ── Image Protection ──────────────────────────────
+// Casual-download protection. Cannot block DevTools/Screenshot.
+// Scope: protected images only (hero portrait + studio thumbs). Leaves
+// devtools, form, and rest of the page fully functional.
+(function protectImages() {
+    const protectedSelector = '.hero-portrait img, .portrait-studios .thumb img, .hero-portrait, .portrait-studios .thumb';
+
+    // Block right-click "Save Image As" on protected images
+    document.addEventListener('contextmenu', (e) => {
+        if (e.target.closest('.hero-portrait, .portrait-studios')) {
+            e.preventDefault();
+        }
+    });
+
+    // Block drag-to-desktop
+    document.addEventListener('dragstart', (e) => {
+        if (e.target.tagName === 'IMG' || e.target.closest('.hero-portrait, .portrait-studios')) {
+            e.preventDefault();
+        }
+    });
+
+    // Block Cmd+S / Ctrl+S "Save Page"
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+        }
+    });
+
+    // Set draggable=false on all protected images programmatically
+    document.querySelectorAll(protectedSelector).forEach((el) => {
+        if (el.tagName === 'IMG') el.setAttribute('draggable', 'false');
+    });
+})();

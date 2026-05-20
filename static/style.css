@@ -244,6 +244,28 @@ main {
     display: block;
 }
 
+/* ── Image Protection ───────────────────────────────── */
+/* Casual-download protection. Cannot block DevTools/Screenshot, but
+   blocks right-click save, drag-to-desktop, and selection. */
+.hero-portrait img,
+.portrait-studios .thumb img {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
+}
+
+.portrait-studios .thumb {
+    position: relative;
+}
+
 /* Fallback gradient when no portrait image is set */
 .hero-portrait.no-image {
     background: linear-gradient(145deg, var(--blue-light) 0%, #dce8fd 50%, var(--blue-light) 100%);
