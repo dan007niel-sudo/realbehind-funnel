@@ -41,6 +41,8 @@ class LeadQualificationContractTest(unittest.TestCase):
                 "datum": "September 2026",
                 "momente": "Die Reaktion beim First Look und die kleinen Momente mit der Familie.",
                 "investitionsrahmen": "ab 799 €",
+                "privacy_consent": True,
+                "consent_timestamp": "2026-05-20T12:00:00.000Z",
             },
         )
 

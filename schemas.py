@@ -11,9 +11,16 @@ class LeadData(BaseModel):
     datum: str
     momente: str
     investitionsrahmen: str
-    # DSGVO: Einwilligung in Datenverarbeitung muss dokumentiert werden
-    privacy_consent: bool = False
+    # DSGVO: Einwilligung in Datenverarbeitung muss dokumentiert werden.
+    privacy_consent: bool = Field(...)
     consent_timestamp: Optional[str] = None
+
+    @field_validator("privacy_consent")
+    @classmethod
+    def privacy_consent_must_be_true(cls, value: bool) -> bool:
+        if value is not True:
+            raise ValueError("privacy_consent must be accepted")
+        return value
 
 
 class TrackingEvent(BaseModel):

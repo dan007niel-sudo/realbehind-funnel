@@ -37,6 +37,8 @@ class ProductionHardeningTest(unittest.TestCase):
                 "datum": "September 2026",
                 "momente": "First Look und kleine Familienmomente.",
                 "investitionsrahmen": "ab 799 €",
+                "privacy_consent": True,
+                "consent_timestamp": "2026-05-20T12:00:00.000Z",
             },
         )
 
@@ -48,7 +50,29 @@ class ProductionHardeningTest(unittest.TestCase):
         stored = self.repository.get_lead(payload["lead_id"])
         self.assertEqual(stored["name"], "Sophie & Leon")
         self.assertEqual(stored["instagram"], "@sophieundleon")
+        self.assertEqual(stored["privacy_consent"], 1)
+        self.assertEqual(stored["consent_timestamp"], "2026-05-20T12:00:00.000Z")
         self.assertIn(stored["status"], {"received", "briefing_skipped", "email_skipped"})
+
+    def test_qualify_rejects_missing_or_declined_privacy_consent(self):
+        payload = {
+            "name": "Sophie & Leon",
+            "instagram": "@sophieundleon",
+            "website": "https://example.com",
+            "fokus": "Hochzeit",
+            "datum": "September 2026",
+            "momente": "First Look und kleine Familienmomente.",
+            "investitionsrahmen": "ab 799 €",
+        }
+
+        missing_response = self.client.post("/api/qualify", json=payload)
+        self.assertEqual(missing_response.status_code, 422)
+
+        declined_response = self.client.post(
+            "/api/qualify",
+            json={**payload, "privacy_consent": False},
+        )
+        self.assertEqual(declined_response.status_code, 422)
 
     def test_tracking_event_endpoint_persists_frontend_events(self):
         response = self.client.post(

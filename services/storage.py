@@ -45,6 +45,16 @@ class LeadRepository:
                     )
                     """
                 )
+                existing_columns = {
+                    row["name"]
+                    for row in connection.execute("PRAGMA table_info(leads)").fetchall()
+                }
+                if "privacy_consent" not in existing_columns:
+                    connection.execute(
+                        "ALTER TABLE leads ADD COLUMN privacy_consent INTEGER NOT NULL DEFAULT 0"
+                    )
+                if "consent_timestamp" not in existing_columns:
+                    connection.execute("ALTER TABLE leads ADD COLUMN consent_timestamp TEXT")
                 connection.execute(
                     """
                     CREATE TABLE IF NOT EXISTS tracking_events (
@@ -60,15 +70,17 @@ class LeadRepository:
 
     def create_lead(self, lead: LeadData) -> int:
         now = utc_now()
+        consent_timestamp = lead.consent_timestamp or now
         with closing(self._connect()) as connection:
             with connection:
                 cursor = connection.execute(
                     """
                     INSERT INTO leads (
                         name, instagram, website, fokus, datum, momente,
-                        investitionsrahmen, status, created_at, updated_at
+                        investitionsrahmen, privacy_consent, consent_timestamp,
+                        status, created_at, updated_at
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         lead.name,
@@ -78,6 +90,8 @@ class LeadRepository:
                         lead.datum,
                         lead.momente,
                         lead.investitionsrahmen,
+                        1 if lead.privacy_consent else 0,
+                        consent_timestamp,
                         "received",
                         now,
                         now,
