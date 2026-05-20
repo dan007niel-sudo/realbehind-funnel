@@ -535,7 +535,8 @@ h2 em {
 /* ── Responsive ─────────────────────────────────────── */
 @media (max-width: 600px) {
     main {
-        padding: 1.5rem 1rem 6rem;
+        min-height: auto;
+        padding: 1.5rem 1rem 2rem;
         align-items: flex-start;
     }
 
@@ -561,7 +562,23 @@ h2 em {
         justify-content: center;
     }
 
-    .site-footer { font-size: 0.65rem; }
+    .site-footer {
+        position: relative;
+        bottom: auto;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.2rem 0;
+        width: auto;
+        padding: 0 1rem calc(1.5rem + env(safe-area-inset-bottom));
+        font-size: 0.62rem;
+        line-height: 1.6;
+    }
+
+    .footer-sep {
+        margin: 0 0.55rem;
+    }
 }
 
 @media (max-width: 400px) {
