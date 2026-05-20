@@ -685,7 +685,7 @@ h2 em {
 
     .hero-portrait {
         width: 100%;
-        height: 280px;
+        height: 320px;
         border-radius: var(--r-lg);
     }
 
@@ -693,8 +693,15 @@ h2 em {
         object-position: center 20%;
     }
 
+    /* Studio thumbnails on mobile: bigger, more prominent */
     .portrait-studios {
-        display: none;
+        margin-top: 1.75rem;
+        gap: 0.6rem;
+    }
+
+    .portrait-studios .thumb {
+        height: 110px;
+        border-radius: 12px;
     }
 }
 
