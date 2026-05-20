@@ -222,6 +222,9 @@ main {
     position: relative;
     width: 240px;
     flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .hero-portrait {
@@ -285,15 +288,15 @@ main {
     opacity: 0.25;
 }
 
-/* Floating badge on portrait */
+/* Badge stays in normal flow so thumbnail rows cannot cover it on desktop. */
 .portrait-badge {
-    position: absolute;
-    bottom: -12px;
-    left: 50%;
-    transform: translateX(-50%);
+    order: 3;
+    align-self: center;
+    position: relative;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 100px;
+    margin-top: 0.75rem;
     padding: 0.45rem 1rem;
     font-family: var(--font-body);
     font-size: 0.7rem;
@@ -307,6 +310,7 @@ main {
 
 /* Studio thumbnails below portrait */
 .portrait-studios {
+    order: 2;
     display: flex;
     gap: 0.5rem;
     margin-top: 1.5rem;
