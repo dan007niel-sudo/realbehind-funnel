@@ -97,7 +97,11 @@ class ProductionHardeningTest(unittest.TestCase):
         self.assertIn("trackEvent('cta_clicked'", script)
         self.assertIn("trackEvent('form_started'", script)
         self.assertIn("trackEvent('form_submitted'", script)
-        self.assertIn("trackEvent('calendly_loaded'", script)
+        # Calendly is now consent-gated (DSGVO). Two separate events:
+        #  - step_4_reached: user arrived at Calendly step (gate or widget)
+        #  - calendly_consent_accepted: user explicitly accepted US-Drittland
+        self.assertIn("trackEvent('step_4_reached'", script)
+        self.assertIn("trackEvent('calendly_consent_accepted'", script)
         self.assertIn("calendly.event_scheduled", script)
         self.assertIn("fetch('/api/events'", script)
 

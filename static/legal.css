@@ -1,0 +1,302 @@
+/* ═══════════════════════════════════════════════════════════════
+   RealBehind — Legal Pages (Impressum + Datenschutz)
+   Erweitert style.css mit page-spezifischen Stilen
+   ═══════════════════════════════════════════════════════════════ */
+
+body.legal-page {
+    background: var(--off-white);
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+/* Override main's flex layout from style.css (Funnel-only) */
+body.legal-page main.legal-container {
+    display: block;
+    justify-content: initial;
+    align-items: initial;
+    min-height: auto;
+    z-index: auto;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.legal-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1.1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.legal-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink-mid);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.legal-back:hover {
+    color: var(--blue);
+}
+
+.legal-brand {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+}
+
+/* ── Container ──────────────────────────────────────── */
+.legal-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 6rem;
+    font-family: var(--font-body);
+    color: var(--ink);
+    line-height: 1.7;
+}
+
+/* ── Headings ───────────────────────────────────────── */
+.legal-container h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+}
+
+.legal-container .legal-lead {
+    font-size: 1rem;
+    color: var(--ink-soft);
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.legal-container h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 2.5rem 0 1rem;
+    letter-spacing: -0.3px;
+}
+
+.legal-container h3 {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 1.5rem 0 0.65rem;
+    letter-spacing: 0;
+}
+
+/* ── Body ───────────────────────────────────────────── */
+.legal-container p {
+    font-size: 0.95rem;
+    color: var(--ink-mid);
+    margin-bottom: 1rem;
+}
+
+.legal-container p strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.legal-container a {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+}
+
+.legal-container a:hover {
+    color: var(--blue-dark);
+}
+
+/* ── Lists ──────────────────────────────────────────── */
+.legal-container ul,
+.legal-container ol {
+    padding-left: 1.4rem;
+    margin-bottom: 1.25rem;
+    color: var(--ink-mid);
+    font-size: 0.95rem;
+}
+
+.legal-container ul li,
+.legal-container ol li {
+    margin-bottom: 0.45rem;
+    padding-left: 0.25rem;
+}
+
+.legal-container ul li::marker {
+    color: var(--blue);
+}
+
+/* ── Placeholders (TBD by Pamela) ──────────────────── */
+.placeholder {
+    background: rgba(75, 130, 241, 0.08);
+    border: 1px dashed var(--blue-border);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-style: italic;
+    color: var(--blue-dark);
+    font-size: 0.92em;
+    white-space: nowrap;
+}
+
+/* ── TOC ────────────────────────────────────────────── */
+.legal-toc {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    padding: 1.5rem 1.75rem;
+    margin: 2rem 0 3rem;
+}
+
+.legal-toc strong {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--blue);
+    margin-bottom: 1rem;
+}
+
+.legal-toc ol {
+    margin: 0;
+    padding-left: 1.2rem;
+    columns: 2;
+    column-gap: 2rem;
+    font-size: 0.9rem;
+}
+
+.legal-toc ol li {
+    margin-bottom: 0.4rem;
+    break-inside: avoid;
+}
+
+.legal-toc a {
+    text-decoration: none;
+    color: var(--ink-mid);
+}
+
+.legal-toc a:hover {
+    color: var(--blue);
+}
+
+@media (max-width: 600px) {
+    .legal-toc ol {
+        columns: 1;
+    }
+}
+
+/* ── Table ──────────────────────────────────────────── */
+.legal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.88rem;
+    background: var(--white);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.legal-table th,
+.legal-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--border);
+}
+
+.legal-table th {
+    background: var(--blue-light);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.legal-table tr:last-child td {
+    border-bottom: none;
+}
+
+.legal-table tr:hover {
+    background: rgba(75, 130, 241, 0.03);
+}
+
+@media (max-width: 600px) {
+    .legal-table,
+    .legal-table thead,
+    .legal-table tbody,
+    .legal-table tr,
+    .legal-table th,
+    .legal-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .legal-table thead {
+        display: none;
+    }
+
+    .legal-table tr {
+        border-bottom: 2px solid var(--border);
+        padding: 0.75rem 0;
+    }
+
+    .legal-table td {
+        border-bottom: none;
+        padding: 0.25rem 1rem;
+    }
+
+    .legal-table td:first-child {
+        font-weight: 600;
+        color: var(--ink);
+        padding-top: 0.75rem;
+    }
+}
+
+/* ── Sections ───────────────────────────────────────── */
+.legal-container section {
+    scroll-margin-top: 80px;
+}
+
+.legal-footer-meta {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-style: italic;
+}
+
+/* ── Footer (override fixed footer) ─────────────────── */
+.site-footer--legal {
+    position: static !important;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 1.5rem;
+    opacity: 1;
+    text-align: center;
+    pointer-events: auto;
+}

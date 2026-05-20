@@ -6,17 +6,13 @@
     <title>RealBehind — Echte Momente, die man fühlt</title>
     <meta name="description" content="Behind-the-Scenes Content für Hochzeiten & Events, der echte Emotionen einfängt. Jetzt Kennenlernen buchen.">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Self-hosted fonts (DSGVO — keine Drittland-Übermittlung an Google) -->
+    <link rel="stylesheet" href="/static/fonts/fonts.css">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/style.css?v=20260520-blue-v3.2">
+    <link rel="stylesheet" href="/static/style.css?v=20260520-blue-v3.3">
 
-    <!-- Calendly -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <!-- Calendly assets werden erst nach Einwilligung dynamisch geladen (app.js → loadCalendlyAssets) -->
 </head>
 <body>
 
@@ -164,6 +160,15 @@
                         <textarea id="momente" rows="3" placeholder="z.B. First Look, Reaktionen der Gäste, kleine ungestellte Augenblicke…" required></textarea>
                     </div>
 
+                    <div class="input-group consent-group">
+                        <label class="consent-label">
+                            <input type="checkbox" id="privacy-consent" required>
+                            <span class="consent-text">
+                                Ich habe die <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. Ich kann diese Einwilligung jederzeit widerrufen.
+                            </span>
+                        </label>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-ghost" onclick="nextStep(1)">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -214,7 +219,30 @@
                         Zurück
                     </button>
                 </header>
-                <div id="calendly-embed" class="calendly-inline-widget" style="min-width:320px;height:680px;" data-auto-load="false"></div>
+
+                <!-- Consent-Gate für Calendly (US-Drittland, setzt Cookies) -->
+                <div id="calendly-consent" class="consent-gate">
+                    <h3>Terminbuchung über Calendly</h3>
+                    <p>
+                        Für die Terminbuchung nutzen wir <strong>Calendly</strong> (Calendly LLC, USA).
+                        Beim Laden des Widgets werden Cookies gesetzt und Daten an Server in den USA übertragen.
+                        Diese Datenübermittlung erfolgt auf Basis von Standardvertragsklauseln (Art. 46 DSGVO).
+                    </p>
+                    <p class="consent-detail">
+                        Übertragen werden: IP-Adresse, Browserdaten, deine ausgewählten Termin- und Kontaktdaten.
+                        Mehr in unserer <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
+                    </p>
+                    <div class="consent-actions">
+                        <button type="button" class="btn-primary" id="accept-calendly">
+                            <span>Calendly laden &amp; Termin buchen</span>
+                        </button>
+                        <button type="button" class="btn-ghost" onclick="nextStep(2)">
+                            Lieber per E-Mail
+                        </button>
+                    </div>
+                </div>
+
+                <div id="calendly-embed" class="calendly-inline-widget" style="min-width:320px;height:680px;display:none;" data-auto-load="false"></div>
             </div>
         </section>
 
@@ -223,9 +251,13 @@
     <footer class="site-footer">
         <span>&copy; 2026 RealBehind</span>
         <span class="footer-sep">·</span>
+        <a href="/impressum">Impressum</a>
+        <span class="footer-sep">·</span>
+        <a href="/datenschutz">Datenschutz</a>
+        <span class="footer-sep">·</span>
         <span>Echte Momente. Für immer.</span>
     </footer>
 
-    <script src="/static/app.js?v=20260520-blue-v3.2"></script>
+    <script src="/static/app.js?v=20260520-blue-v3.3"></script>
 </body>
 </html>

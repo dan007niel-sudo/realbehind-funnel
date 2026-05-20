@@ -67,6 +67,16 @@ async def root():
     return FileResponse(config.BASE_DIR / "static" / "index.html")
 
 
+@app.get("/impressum")
+async def impressum():
+    return FileResponse(config.BASE_DIR / "static" / "impressum.html")
+
+
+@app.get("/datenschutz")
+async def datenschutz():
+    return FileResponse(config.BASE_DIR / "static" / "datenschutz.html")
+
+
 if __name__ == "__main__":
     import uvicorn
 

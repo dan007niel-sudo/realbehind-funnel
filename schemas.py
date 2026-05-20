@@ -11,6 +11,9 @@ class LeadData(BaseModel):
     datum: str
     momente: str
     investitionsrahmen: str
+    # DSGVO: Einwilligung in Datenverarbeitung muss dokumentiert werden
+    privacy_consent: bool = False
+    consent_timestamp: Optional[str] = None
 
 
 class TrackingEvent(BaseModel):

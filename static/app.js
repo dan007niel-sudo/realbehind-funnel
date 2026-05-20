@@ -58,6 +58,13 @@ if (leadForm) {
             return;
         }
 
+        // Hard guard: privacy consent required (DSGVO Art. 6 Abs. 1a)
+        const consentBox = document.getElementById('privacy-consent');
+        if (consentBox && !consentBox.checked) {
+            consentBox.reportValidity();
+            return;
+        }
+
         const leadData = {
             name:                document.getElementById('name').value.trim(),
             instagram:           document.getElementById('instagram').value.trim(),
@@ -65,7 +72,9 @@ if (leadForm) {
             fokus:               document.getElementById('fokus').value,
             datum:               document.getElementById('datum').value.trim(),
             momente:             document.getElementById('momente').value.trim(),
-            investitionsrahmen:  document.getElementById('investitionsrahmen').value
+            investitionsrahmen:  document.getElementById('investitionsrahmen').value,
+            privacy_consent:     true,
+            consent_timestamp:   new Date().toISOString()
         };
 
         trackEvent('form_submitted', { fokus: leadData.fokus, investitionsrahmen: leadData.investitionsrahmen });
@@ -87,18 +96,65 @@ if (leadForm) {
             console.error('Backend error (non-critical):', err);
         }
 
-        // Show Calendly after brief "processing" feel
+        // Show Calendly consent gate (Step 4), or auto-init if user has consented before in this session
         setTimeout(() => {
-            initCalendly(leadData);
             nextStep(4);
-            trackEvent('calendly_loaded', { step: 4 });
+            const hasPriorConsent = (() => {
+                try { return sessionStorage.getItem('rb_calendly_consent') === '1'; }
+                catch (e) { return false; }
+            })();
+            if (hasPriorConsent) {
+                initCalendly(leadData);
+            } else {
+                showCalendlyConsentGate(leadData);
+            }
+            trackEvent('step_4_reached');
         }, 2800);
     });
 }
 
-// ── Calendly Integration ──────────────────────────
-function initCalendly(lead) {
+// ── Calendly Integration (DSGVO: lädt erst nach Consent) ────
+let calendlyAssetsLoaded = false;
+let pendingLead = null;
+
+function loadCalendlyAssets() {
+    return new Promise((resolve, reject) => {
+        if (calendlyAssetsLoaded) return resolve();
+
+        // CSS
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://assets.calendly.com/assets/external/widget.css';
+        document.head.appendChild(link);
+
+        // Script
+        const script = document.createElement('script');
+        script.src = 'https://assets.calendly.com/assets/external/widget.js';
+        script.async = true;
+        script.onload = () => {
+            calendlyAssetsLoaded = true;
+            resolve();
+        };
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+
+function showCalendlyConsentGate(lead) {
+    pendingLead = lead;
+    const gate = document.getElementById('calendly-consent');
+    const embed = document.getElementById('calendly-embed');
+    if (gate) gate.style.display = 'block';
+    if (embed) embed.style.display = 'none';
+}
+
+async function initCalendly(lead) {
+    await loadCalendlyAssets();
+
+    const gate = document.getElementById('calendly-consent');
     const embedContainer = document.getElementById('calendly-embed');
+    if (gate) gate.style.display = 'none';
+    if (embedContainer) embedContainer.style.display = 'block';
     embedContainer.innerHTML = '';
 
     Calendly.initInlineWidget({
@@ -117,7 +173,24 @@ function initCalendly(lead) {
             utmCampaign: 'BioLink'
         }
     });
+
+    trackEvent('calendly_consent_accepted');
 }
+
+// Wire up consent button
+document.addEventListener('DOMContentLoaded', () => {
+    const acceptBtn = document.getElementById('accept-calendly');
+    if (acceptBtn) {
+        acceptBtn.addEventListener('click', async () => {
+            if (pendingLead) {
+                try {
+                    sessionStorage.setItem('rb_calendly_consent', '1');
+                } catch (e) { /* private mode etc. */ }
+                await initCalendly(pendingLead);
+            }
+        });
+    }
+});
 
 window.addEventListener('message', (event) => {
     if (event.data && event.data.event === 'calendly.event_scheduled') {
