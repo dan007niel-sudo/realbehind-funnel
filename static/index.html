@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/static/fonts/fonts.css">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/static/style.css?v=20260520-blue-v3.4">
+    <link rel="stylesheet" href="/static/style.css?v=20260520-blue-v3.5">
 
     <!-- Calendly assets werden erst nach Einwilligung dynamisch geladen (app.js → loadCalendlyAssets) -->
 </head>
@@ -161,12 +161,13 @@
                     </div>
 
                     <div class="input-group consent-group">
-                        <label class="consent-label">
-                            <input type="checkbox" id="privacy-consent" required>
-                            <span class="consent-text">
-                                Ich habe die <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. Ich kann diese Einwilligung jederzeit widerrufen.
-                            </span>
-                        </label>
+                        <div class="consent-label">
+                            <input type="checkbox" id="privacy-consent" required aria-describedby="privacy-consent-text">
+                            <label for="privacy-consent" class="consent-check" aria-label="Datenschutz-Einwilligung"></label>
+                            <p class="consent-text" id="privacy-consent-text">
+                                Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu. Ich kann diese Einwilligung jederzeit widerrufen.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="form-actions">
@@ -230,7 +231,7 @@
                     </p>
                     <p class="consent-detail">
                         Übertragen werden: IP-Adresse, Browserdaten, deine ausgewählten Termin- und Kontaktdaten.
-                        Mehr in unserer <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
+                        Mehr in unserer <a href="/datenschutz">Datenschutzerklärung</a>.
                     </p>
                     <div class="consent-actions">
                         <button type="button" class="btn-primary" id="accept-calendly">

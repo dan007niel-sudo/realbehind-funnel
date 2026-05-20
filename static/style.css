@@ -680,7 +680,6 @@ h2 em {
     flex-direction: row !important;
     align-items: flex-start;
     gap: 0.75rem;
-    cursor: pointer;
     text-transform: none !important;
     letter-spacing: 0 !important;
     font-size: 0.85rem !important;
@@ -691,12 +690,38 @@ h2 em {
 }
 
 .consent-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+}
+
+.consent-check {
     flex-shrink: 0;
     width: 18px;
     height: 18px;
     margin-top: 2px;
-    accent-color: var(--blue);
+    border: 1.5px solid var(--border-mid);
+    border-radius: 5px;
+    background: var(--white);
     cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.consent-label input[type="checkbox"]:checked + .consent-check {
+    background: var(--blue);
+    border-color: var(--blue);
+    box-shadow: inset 0 0 0 3px var(--white);
+}
+
+.consent-label input[type="checkbox"]:focus-visible + .consent-check {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.consent-text {
+    margin: 0;
 }
 
 .consent-text a {
