@@ -9,6 +9,7 @@ __pycache__/
 env/
 venv/
 .venv/
+data/
 
 # OS Files
 .DS_Store

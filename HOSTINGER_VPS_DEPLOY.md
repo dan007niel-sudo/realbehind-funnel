@@ -12,6 +12,7 @@ Ziel: Railway-FastAPI-App als Docker-Compose-Service auf dem Hostinger VPS betre
   - `SMTP_USER`
   - `SMTP_PASSWORD`
   - `NOTIFICATION_EMAIL`
+  - `LEADS_DB_PATH` (Default im Docker-Deploy: `/app/data/leads.db`)
 
 ## Deploy
 
@@ -28,6 +29,16 @@ nano .env
 docker compose up -d --build
 curl http://127.0.0.1:8010/health
 ```
+
+Nach einem bestehenden Setup läuft der Deploy reproduzierbar über:
+
+```bash
+ssh root@187.124.40.126
+cd /root/realbehind-funnel
+./deploy.sh
+```
+
+Der Container nutzt `./data:/app/data`, damit Leads und Tracking-Events in SQLite Deploys überleben.
 
 ## Caddy
 
@@ -70,6 +81,13 @@ Wichtig: Es darf nicht noch ein zweiter Caddy-Container Port 80/443 binden.
 ```bash
 curl https://realbehind.com/health
 docker compose logs -f realbehind
+```
+
+Optional prüfen:
+
+```bash
+sqlite3 /root/realbehind-funnel/data/leads.db 'select id, name, status, created_at from leads order by id desc limit 5;'
+sqlite3 /root/realbehind-funnel/data/leads.db 'select event, session_id, created_at from tracking_events order by id desc limit 10;'
 ```
 
 Danach im Funnel einen Testlead mit Pamela-freundlichen Testdaten abschicken und prüfen, ob die E-Mail ankommt.

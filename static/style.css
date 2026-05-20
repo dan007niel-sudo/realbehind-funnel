@@ -541,7 +541,7 @@ h2 em {
     }
 
     .content-box.glass-box {
-        padding: 2rem 1.5rem;
+        padding: 1.75rem 1.35rem;
     }
 
     .field-row {
@@ -550,10 +550,45 @@ h2 em {
     }
 
     h1 { font-size: 2.75rem; letter-spacing: -0.5px; }
-    h2 { font-size: 1.9rem; }
+    h2 { font-size: 1.85rem; margin-bottom: 1.35rem; }
+
+    .step-header {
+        margin-bottom: 1.25rem;
+    }
+
+    .step-label {
+        font-size: 0.66rem;
+        line-height: 1.45;
+        letter-spacing: 1.8px;
+    }
+
+    .input-group {
+        gap: 0.38rem;
+        margin-bottom: 1.05rem;
+    }
+
+    .input-group label {
+        font-size: 0.72rem;
+        line-height: 1.45;
+        letter-spacing: 0.7px;
+    }
+
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
+        border-radius: 14px;
+        padding: 0.82rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .input-group textarea {
+        min-height: 96px;
+    }
 
     .form-actions {
         flex-direction: column-reverse;
+        gap: 0.75rem;
+        padding-top: 0.85rem;
     }
 
     .form-actions .btn-ghost,
@@ -583,5 +618,5 @@ h2 em {
 
 @media (max-width: 400px) {
     h1 { font-size: 2.25rem; }
-    .content-box.glass-box { padding: 1.75rem 1.25rem; }
+    .content-box.glass-box { padding: 1.5rem 1.05rem; }
 }

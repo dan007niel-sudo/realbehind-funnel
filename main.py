@@ -1,159 +1,73 @@
-import os
-import smtplib
-from pathlib import Path
-from email.message import EmailMessage
-from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
-from fastapi.staticfiles import StaticFiles
+from fastapi import BackgroundTasks, FastAPI
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel
-from dotenv import load_dotenv
-from google import genai
+from fastapi.staticfiles import StaticFiles
 
-load_dotenv()
+import config
+from schemas import LeadData, TrackingEvent
+from services.lead_processor import process_and_notify_lead
+from services.storage import LeadRepository
 
-app = FastAPI(title="RealBehind Lead-Funnel API", version="1.1.0")
-BASE_DIR = Path(__file__).resolve().parent
 
-# ── Config ──────────────────────────────────────────────
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
-SMTP_USER = os.getenv("SMTP_USER", "")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD", "")
-NOTIFICATION_EMAIL = os.getenv("NOTIFICATION_EMAIL", "")
+app = FastAPI(title="RealBehind Lead-Funnel API", version="1.2.0")
 
-from typing import Optional
+# Re-exported for existing tests and local checks that patch these values.
+GOOGLE_API_KEY = config.GOOGLE_API_KEY
+GEMINI_MODEL = config.GEMINI_MODEL
+SMTP_SERVER = config.SMTP_SERVER
+SMTP_PORT = config.SMTP_PORT
+SMTP_USER = config.SMTP_USER
+SMTP_PASSWORD = config.SMTP_PASSWORD
+NOTIFICATION_EMAIL = config.NOTIFICATION_EMAIL
 
-# ── Models ──────────────────────────────────────────────
-class LeadData(BaseModel):
-    name: str
-    instagram: str
-    website: Optional[str] = None
-    fokus: str
-    datum: str
-    momente: str
-    investitionsrahmen: str
+lead_repository = LeadRepository(config.LEADS_DB_PATH)
 
-# ── Helpers ─────────────────────────────────────────────
-
-def send_email(subject: str, content: str):
-    if not SMTP_USER or not SMTP_PASSWORD or not NOTIFICATION_EMAIL:
-        print("DEBUG: Email configuration missing. Skipping email.")
-        return
-
-    msg = EmailMessage()
-    msg.set_content(content)
-    msg["Subject"] = subject
-    msg["From"] = SMTP_USER
-    msg["To"] = NOTIFICATION_EMAIL
-
-    try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(SMTP_USER, SMTP_PASSWORD)
-        server.send_message(msg)
-        server.quit()
-        print(f"DEBUG: Email sent to {NOTIFICATION_EMAIL}")
-    except Exception as e:
-        print(f"DEBUG: Failed to send email: {str(e)}")
-
-async def process_and_notify_lead(lead: LeadData):
-    """
-    Qualifies the lead using Gemini and sends the briefing via email.
-    """
-    if not GOOGLE_API_KEY:
-        print("DEBUG: GOOGLE_API_KEY missing. Skipping qualification.")
-        return
-
-    system_prompt = """
-### ROLLE
-Du bist der kreative Assistant für "RealBehind". Die Marke steht für echte Momente, die man fühlt – ungestellte Behind-the-Scenes-Augenblicke.
-Deine Aufgabe ist es, Leads extrem kurz, knackig und menschlich für deine Kollegin Pamela aufzubereiten – als wäre es eine schnelle WhatsApp-Nachricht.
-
-### KONTEXT
-- Marke: RealBehind (Echtheit über Perfektion, Festhalten verlorener Momente).
-- Tonfall: Sehr natürlich, kurz, kumpelhaft (WICHTIG: KEINE KI-typischen Aufzählungen, keine Sternchen, keine dicken Formatierungen).
-
-### AUFGABE
-Schreibe den Text exakt in diesem kurzen, fließenden Format ohne Markdown. Bewerte dabei auch die Budget-Reife:
-- "Ich brauche erst ein Gefühl für die Pakete" bedeutet: Wertaufbau und Orientierung zuerst.
-- "ab 799 €" bedeutet: passt zum Einstiegspaket.
-- "1.000-1.500 €" oder "1.500 €+" bedeutet: gute Budget-Reife, größeres Paket oder Upsell prüfen.
-
-INTERN FÜR PAMELA:
-Hey Pamela, [1-2 kurze Sätze zum Potenzial dieses Leads inkl. Budget-Reife]. Eine gute Richtung für den ersten Call wäre: [1 konkrete Call-Empfehlung passend zu Anlass, Wunschmomenten und Investitionsrahmen].
-
-TEXT FÜR DEN KUNDEN:
-Betreff: Echte Momente: Unser Kennenlernen!
-Hey [Name], mega, dass wir sprechen. Der Termin ist geblockt. Überleg dir doch bis zu unserem Call schon mal kurz, welche kleinen, ungestellten Momente dir an eurem Tag eigentlich am wichtigsten sind! Freue mich riesig drauf.
-"""
-
-    user_input = (
-        "Lead-Daten:\n"
-        f"Name/Brautpaar: {lead.name}\n"
-        f"Instagram: {lead.instagram}\n"
-        f"Website: {lead.website or 'Nicht angegeben'}\n"
-        f"Anlass/Fokus: {lead.fokus}\n"
-        f"Datum/Zeitraum: {lead.datum}\n"
-        f"Momente, die nicht verloren gehen dürfen: {lead.momente}\n"
-        f"Investitionsrahmen: {lead.investitionsrahmen}"
-    )
-
-    client = genai.Client(api_key=GOOGLE_API_KEY)
-    try:
-        response = client.models.generate_content(
-            model=GEMINI_MODEL,
-            contents=[user_input],
-            config=genai.types.GenerateContentConfig(
-                system_instruction=system_prompt,
-            ),
-        )
-        
-        briefing_content = response.text
-        subject = f"Neuer Lead Qualifiziert: {lead.name} ({lead.fokus})"
-        
-        # Add metadata to the email
-        full_content = (
-            f"--- INTERNES BRIEFING ---\n\n{briefing_content}\n\n"
-            "--- LEAD-DETAILS ---\n"
-            f"Name: {lead.name}\n"
-            f"Instagram: {lead.instagram}\n"
-            f"Website: {lead.website or 'Nicht angegeben'}\n"
-            f"Fokus: {lead.fokus}\n"
-            f"Datum/Zeitraum: {lead.datum}\n"
-            f"Wichtige Momente: {lead.momente}\n"
-            f"Investitionsrahmen: {lead.investitionsrahmen}"
-        )
-        
-        send_email(subject, full_content)
-        
-    except Exception as e:
-        print(f"DEBUG: Gemini Error: {str(e)}")
-
-# ── API Endpoints ─────────────────────────────────────
 
 @app.post("/api/qualify")
 async def qualify_lead(lead: LeadData, background_tasks: BackgroundTasks):
-    # Start the KI qualification and email process in the background
-    background_tasks.add_task(process_and_notify_lead, lead)
-    
-    return JSONResponse(content={
-        "status": "success",
-        "message": "Lead-Daten empfangen. Qualifizierung läuft im Hintergrund."
-    })
+    lead_id = lead_repository.create_lead(lead)
+    background_tasks.add_task(
+        process_and_notify_lead,
+        lead_id,
+        lead,
+        lead_repository,
+        google_api_key=GOOGLE_API_KEY,
+        gemini_model=GEMINI_MODEL,
+        smtp_server=SMTP_SERVER,
+        smtp_port=SMTP_PORT,
+        smtp_user=SMTP_USER,
+        smtp_password=SMTP_PASSWORD,
+        notification_email=NOTIFICATION_EMAIL,
+    )
+
+    return JSONResponse(
+        content={
+            "status": "success",
+            "lead_id": lead_id,
+            "message": "Lead-Daten empfangen. Qualifizierung läuft im Hintergrund.",
+        }
+    )
+
+
+@app.post("/api/events")
+async def record_event(event: TrackingEvent):
+    event_id = lead_repository.record_event(event)
+    return {"status": "success", "event_id": event_id}
+
 
 @app.get("/health")
 async def health():
     return {"status": "ok", "service": "realbehind-funnel"}
 
-# ── Static Files ────────────────────────────────────────
-app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+
+app.mount("/static", StaticFiles(directory=config.BASE_DIR / "static"), name="static")
+
 
 @app.get("/")
 async def root():
-    return FileResponse(BASE_DIR / "static" / "index.html")
+    return FileResponse(config.BASE_DIR / "static" / "index.html")
+
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

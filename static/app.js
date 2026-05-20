@@ -4,6 +4,27 @@
    ═══════════════════════════════════════════════════ */
 
 const CALENDLY_URL = 'https://calendly.com/dan007niel/30min';
+const sessionId = (window.crypto && window.crypto.randomUUID)
+    ? window.crypto.randomUUID()
+    : `${Date.now()}-${Math.random()}`;
+let currentLeadId = null;
+let formStarted = false;
+
+function trackEvent(event, metadata = {}) {
+    fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            event,
+            session_id: sessionId,
+            lead_id: currentLeadId,
+            metadata
+        }),
+        keepalive: true
+    }).catch((err) => {
+        console.warn('Tracking event failed:', err);
+    });
+}
 
 // ── Step Navigation ───────────────────────────────
 function nextStep(stepNumber) {
@@ -13,10 +34,22 @@ function nextStep(stepNumber) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function startFunnel() {
+    trackEvent('cta_clicked', { step: 1, label: 'Jetzt Kennenlernen anfragen' });
+    nextStep(2);
+}
+
 // ── Lead Form Handling ────────────────────────────
 const leadForm = document.getElementById('lead-form');
 
 if (leadForm) {
+    leadForm.addEventListener('input', () => {
+        if (!formStarted) {
+            formStarted = true;
+            trackEvent('form_started', { step: 2 });
+        }
+    });
+
     leadForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -35,6 +68,8 @@ if (leadForm) {
             investitionsrahmen:  document.getElementById('investitionsrahmen').value
         };
 
+        trackEvent('form_submitted', { fokus: leadData.fokus, investitionsrahmen: leadData.investitionsrahmen });
+
         // Transition to loading screen
         nextStep(3);
 
@@ -46,6 +81,7 @@ if (leadForm) {
                 body: JSON.stringify(leadData)
             });
             const data = await response.json();
+            currentLeadId = data.lead_id || null;
             console.log('Lead processed:', data);
         } catch (err) {
             console.error('Backend error (non-critical):', err);
@@ -55,6 +91,7 @@ if (leadForm) {
         setTimeout(() => {
             initCalendly(leadData);
             nextStep(4);
+            trackEvent('calendly_loaded', { step: 4 });
         }, 2800);
     });
 }
@@ -81,6 +118,12 @@ function initCalendly(lead) {
         }
     });
 }
+
+window.addEventListener('message', (event) => {
+    if (event.data && event.data.event === 'calendly.event_scheduled') {
+        trackEvent('calendly_event_scheduled', { calendlyEvent: event.data.event });
+    }
+});
 
 // ── Subtle Parallax on Orbs ───────────────────────
 document.addEventListener('mousemove', (e) => {
