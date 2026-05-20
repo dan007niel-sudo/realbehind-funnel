@@ -85,7 +85,8 @@ class ProductionHardeningTest(unittest.TestCase):
         contents = script.read_text(encoding="utf-8")
         self.assertIn("git fetch origin main", contents)
         self.assertIn("docker compose up -d --build realbehind", contents)
-        self.assertIn("curl -fsS http://127.0.0.1:8010/health", contents)
+        self.assertIn('wait_for_url "http://127.0.0.1:8010/health" "Internal"', contents)
+        self.assertIn('wait_for_url "https://realbehind.com/health" "Public"', contents)
         self.assertIn("https://realbehind.com/health", contents)
 
     def test_frontend_records_key_funnel_events(self):
