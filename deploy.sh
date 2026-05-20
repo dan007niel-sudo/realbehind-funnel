@@ -13,7 +13,21 @@ fi
 
 mkdir -p data
 docker compose up -d --build realbehind
-curl -fsS http://127.0.0.1:8010/health
+
+for attempt in $(seq 1 30); do
+  if curl -fsS http://127.0.0.1:8010/health; then
+    break
+  fi
+  if [ "$attempt" -eq 30 ]; then
+    echo "Healthcheck failed after $attempt attempts."
+    docker compose ps
+    docker compose logs --tail=80 realbehind
+    exit 1
+  fi
+  sleep 1
+done
+
+echo
 curl -fsS https://realbehind.com/health
 
 echo
