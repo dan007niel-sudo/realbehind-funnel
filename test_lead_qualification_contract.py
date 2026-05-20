@@ -9,6 +9,9 @@ import main
 class LeadQualificationContractTest(unittest.TestCase):
     def setUp(self):
         main.GOOGLE_API_KEY = ""
+        main.SMTP_USER = ""
+        main.SMTP_PASSWORD = ""
+        main.NOTIFICATION_EMAIL = ""
         self.client = TestClient(main.app)
 
     def test_form_contains_soft_qualification_fields_and_budget_anchor(self):
