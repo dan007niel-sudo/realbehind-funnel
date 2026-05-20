@@ -816,6 +816,7 @@ h2 em {
     /* Studio thumbnails on mobile: bigger, more prominent */
     .portrait-studios {
         margin-top: 1.75rem;
+        margin-bottom: 3rem;
         gap: 0.6rem;
     }
 
@@ -901,6 +902,10 @@ h2 em {
         padding: 0 1rem calc(1.5rem + env(safe-area-inset-bottom));
         font-size: 0.62rem;
         line-height: 1.6;
+    }
+
+    .watermark {
+        display: none;
     }
 
     .footer-sep {
