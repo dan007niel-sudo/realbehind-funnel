@@ -3,7 +3,7 @@
    Step transitions, form handling, Calendly pre-fill.
    ═══════════════════════════════════════════════════ */
 
-const CALENDLY_URL = 'https://calendly.com/dan007niel/30min';
+const CALENDLY_URL = 'https://calendly.com/realbehindinfo/30min';
 const sessionId = (window.crypto && window.crypto.randomUUID)
     ? window.crypto.randomUUID()
     : `${Date.now()}-${Math.random()}`;
