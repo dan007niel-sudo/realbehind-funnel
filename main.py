@@ -1,5 +1,6 @@
 import os
 import smtplib
+from pathlib import Path
 from email.message import EmailMessage
 from fastapi import FastAPI, Request, HTTPException, BackgroundTasks
 from fastapi.staticfiles import StaticFiles
@@ -11,9 +12,11 @@ from google import genai
 load_dotenv()
 
 app = FastAPI(title="RealBehind Lead-Funnel API", version="1.1.0")
+BASE_DIR = Path(__file__).resolve().parent
 
 # ── Config ──────────────────────────────────────────────
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 587))
 SMTP_USER = os.getenv("SMTP_USER", "")
@@ -100,7 +103,7 @@ Hey [Name], mega, dass wir sprechen. Der Termin ist geblockt. Überleg dir doch 
     client = genai.Client(api_key=GOOGLE_API_KEY)
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model=GEMINI_MODEL,
             contents=[user_input],
             config=genai.types.GenerateContentConfig(
                 system_instruction=system_prompt,
@@ -140,12 +143,16 @@ async def qualify_lead(lead: LeadData, background_tasks: BackgroundTasks):
         "message": "Lead-Daten empfangen. Qualifizierung läuft im Hintergrund."
     })
 
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "realbehind-funnel"}
+
 # ── Static Files ────────────────────────────────────────
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 @app.get("/")
 async def root():
-    return FileResponse("static/index.html")
+    return FileResponse(BASE_DIR / "static" / "index.html")
 
 if __name__ == "__main__":
     import uvicorn

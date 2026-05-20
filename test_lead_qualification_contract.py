@@ -44,6 +44,13 @@ class LeadQualificationContractTest(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["status"], "success")
 
+    def test_health_endpoint_reports_ok(self):
+        response = self.client.get("/health")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["status"], "ok")
+        self.assertEqual(response.json()["service"], "realbehind-funnel")
+
     def test_frontend_checks_form_validity_before_submission(self):
         app_path = os.path.join(os.path.dirname(__file__), "static", "app.js")
 

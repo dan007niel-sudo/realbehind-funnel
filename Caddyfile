@@ -1,0 +1,4 @@
+realbehind.com, www.realbehind.com {
+    encode zstd gzip
+    reverse_proxy realbehind-funnel:8000
+}

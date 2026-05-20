@@ -19,6 +19,9 @@ class LeadData:
         self.instagram = "@sarah.und.tom"
         self.website = ""
         self.fokus = "Hochzeit"
+        self.datum = "September 2026"
+        self.momente = "First Look und kleine Familienmomente"
+        self.investitionsrahmen = "ab 799 €"
 
 def send_email(subject: str, content: str):
     msg = EmailMessage()
@@ -54,7 +57,16 @@ INTERN FÜR PAMELA:
 Hey Pamela, [1-2 kurze Sätze zum Potenzial dieses Leads]. Eine geile Idee für den ersten Setup-Call wäre: [1 konkrete, kreative Idee].
 """
 
-    user_input = f"Lead-Daten:\nName/Brautpaar: {lead.name}\nInstagram: {lead.instagram}\nWebsite: {lead.website or 'Nicht angegeben'}\nAnlass/Fokus: {lead.fokus}"
+    user_input = (
+        "Lead-Daten:\n"
+        f"Name/Brautpaar: {lead.name}\n"
+        f"Instagram: {lead.instagram}\n"
+        f"Website: {lead.website or 'Nicht angegeben'}\n"
+        f"Anlass/Fokus: {lead.fokus}\n"
+        f"Datum/Zeitraum: {lead.datum}\n"
+        f"Momente: {lead.momente}\n"
+        f"Investitionsrahmen: {lead.investitionsrahmen}"
+    )
 
     try:
         client = genai.Client(api_key=GOOGLE_API_KEY)
@@ -68,9 +80,31 @@ Hey Pamela, [1-2 kurze Sätze zum Potenzial dieses Leads]. Eine geile Idee für 
         print("SUCCESS: Gemini Response generated!")
         briefing_content = response.text
         subject = f"Neuer Lead Qualifiziert: {lead.name} ({lead.fokus})"
-        full_content = f"--- INTERNES BRIEFING ---\n\n{briefing_content}\n\n--- LEAD-DETAILS ---\nName: {lead.name}\nInstagram: {lead.instagram}\nWebsite: {lead.website or 'Nicht angegeben'}\nFokus: {lead.fokus}"
+        full_content = (
+            f"--- INTERNES BRIEFING ---\n\n{briefing_content}\n\n--- LEAD-DETAILS ---\n"
+            f"Name: {lead.name}\n"
+            f"Instagram: {lead.instagram}\n"
+            f"Website: {lead.website or 'Nicht angegeben'}\n"
+            f"Fokus: {lead.fokus}\n"
+            f"Datum/Zeitraum: {lead.datum}\n"
+            f"Wichtige Momente: {lead.momente}\n"
+            f"Investitionsrahmen: {lead.investitionsrahmen}"
+        )
         send_email(subject, full_content)
     except Exception as e:
          print(f"ERROR Gemini: {e}")
 
-asyncio.run(process_and_notify_lead(LeadData()))
+if __name__ == "__main__":
+    missing = [
+        name for name, value in {
+            "GOOGLE_API_KEY": GOOGLE_API_KEY,
+            "SMTP_USER": SMTP_USER,
+            "SMTP_PASSWORD": SMTP_PASSWORD,
+            "NOTIFICATION_EMAIL": NOTIFICATION_EMAIL,
+        }.items()
+        if not value
+    ]
+    if missing:
+        raise SystemExit(f"Missing required environment variables: {', '.join(missing)}")
+
+    asyncio.run(process_and_notify_lead(LeadData()))
